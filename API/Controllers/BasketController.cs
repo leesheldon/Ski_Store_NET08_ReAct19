@@ -24,7 +24,7 @@ public class BasketController(StoreContext context) : BaseApiController
     {
         var basket = await RetrieveBasket();
 
-        // ?? --> check if it is null
+        // ??= means: if basket is null, then execute the create basket function.
         basket ??= CreateBasket();
 
         var product = await context.Products.FindAsync(productId);
