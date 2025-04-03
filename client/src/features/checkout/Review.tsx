@@ -23,6 +23,7 @@ export default function Review({confirmationToken}: Props) {
         if (!confirmationToken?.payment_method_preview.card) return '';
 
         const {card} = confirmationToken.payment_method_preview;
+        
         return `${card.brand.toUpperCase()}, **** **** **** ${card.last4}, 
             Exp: ${card.exp_month}/${card.exp_year}`;
     };
