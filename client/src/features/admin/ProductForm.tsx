@@ -7,7 +7,7 @@ import { useFetchFiltersQuery } from "../catalog/catalogApi";
 import AppSelectInput from "../../app/shared/components/AppSelectInput";
 import AppDropzone from "../../app/shared/components/AppDropzone";
 import { Product } from "../../app/models/product";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useCreateProductMutation, useUpdateProductMutation } from "./adminApi";
 import { LoadingButton } from "@mui/lab";
 import { handleApiError } from "../../lib/util";
@@ -29,9 +29,13 @@ export default function ProductForm({setEditMode, product, refetch, setSelectedP
     const { data } = useFetchFiltersQuery();
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
+    const productSet = useRef(false);
 
     useEffect(() => {
-        if (product) reset(product);
+        if (product && !productSet.current) {
+            reset(product);
+            productSet.current = true;
+        }
 
         return () => {
             if (watchFile) URL.revokeObjectURL(watchFile.preview);
