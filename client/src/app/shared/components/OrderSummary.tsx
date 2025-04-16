@@ -10,12 +10,17 @@ import { Delete } from "@mui/icons-material";
 export default function OrderSummary() {
     const {subtotal, deliveryFee, discount, basket, total} = useBasket();
     const location = useLocation();
-    const {register, handleSubmit, formState: {isSubmitting}} = useForm();
+    const {register, reset, handleSubmit, formState: {isSubmitting}} = useForm();
     const [addCoupon] = useAddCouponMutation();
     const [removeCoupon, {isLoading}] = useRemoveCouponMutation();
 
     const onSubmit = async (data: FieldValues) => {
         await addCoupon(data.code);
+    };
+
+    const onRemove = async () => {
+        await removeCoupon();
+        reset();
     };
 
     return (
@@ -93,7 +98,7 @@ export default function OrderSummary() {
                         <Typography fontWeight='bold' variant="body2">
                             {basket.coupon.name} applied
                         </Typography>
-                        <LoadingButton loading={isLoading} onClick={() => removeCoupon()}>
+                        <LoadingButton loading={isLoading} onClick={() => onRemove()}>
                             <Delete color="error" />
                         </LoadingButton>
                     </Box>
